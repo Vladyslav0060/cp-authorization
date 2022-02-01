@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 var cors = require("cors");
-const authRouter = require("./authRouter");
+const authRouter = require("./routers/authRouter");
 const coinRouter = require("./routers/coinRouter");
 const mailRouter = require("./routers/mailRouter");
 const PORT = process.env.PORT || 5000;
