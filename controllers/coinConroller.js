@@ -69,6 +69,19 @@ class coinConroller {
     console.log(response.data);
     res.json(response.data);
   };
+  getCoinInfo = async (req, res) => {
+    const response = await axios.get(
+      "https://pro-api.coinmarketcap.com/v2/cryptocurrency/info",
+      {
+        params: { slug: req.headers.id },
+        headers: {
+          "X-CMC_PRO_API_KEY": "597579ac-3dce-4c0a-8c29-863686119e3d",
+        },
+      }
+    );
+    console.log(response);
+    res.send(response.data.data[Object.keys(response.data.data)[0]]);
+  };
 }
 
 module.exports = new coinConroller();
