@@ -23,6 +23,7 @@ class coinConroller {
     });
     return res.json({ volumesData, ohlcData });
   };
+  //test
   getSymbols = async (req, res) => {
     const response = await axios(
       defaultOptions("https://api.coincap.io/v2/assets")
