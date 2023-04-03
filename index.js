@@ -17,7 +17,7 @@ const fixSettings = () => {
 };
 
 app.use(express.json());
-app.use("/", (req, res) => res.send("Server works"));
+
 app.use("/auth", authRouter);
 app.use("/coin", coinRouter);
 app.use("/mailer", mailRouter);
