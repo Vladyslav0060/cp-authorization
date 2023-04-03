@@ -7,6 +7,8 @@ const coinRouter = require("./src/routers/coinRouter");
 const mailRouter = require("./src/routers/mailRouter");
 const PORT = process.env.PORT || 5000;
 
+process.on("error", (e) => console.error(e));
+
 const app = express();
 app.use(cors());
 
