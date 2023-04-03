@@ -1,4 +1,5 @@
 const convertPeriod = (period) => {
+  console.log(period);
   const intervals = { m: "minute", h: "hour", d: "day" };
   try {
     const match = period.match(/^([a-z])(\d+)$/i);
