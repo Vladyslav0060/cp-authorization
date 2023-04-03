@@ -17,16 +17,13 @@ const fixSettings = () => {
 };
 
 app.use(express.json());
+app.use("/", (req, res) => res.send("Server works"));
 app.use("/auth", authRouter);
 app.use("/coin", coinRouter);
 app.use("/mailer", mailRouter);
 const start = async () => {
   try {
-    fixSettings(); //установил значения для исключения ошибок в будущем
-    // await mongoose.connect(
-    //   `mongodb+srv://vlad:vlad2281@cluster0.pwnbs.mongodb.net/auth-test?retryWrites=true&w=majority`,
-    //   { useUnifiedTopology: true }
-    // );
+    fixSettings();
     app.listen(PORT, () => console.log(`server started on port ${PORT}`));
   } catch (e) {
     console.log(e);
