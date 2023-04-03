@@ -1,6 +1,6 @@
 const Router = require("express");
 const router = new Router();
-const controller = require("../controllers/coinConroller");
+const controller = require("../../controllers/coinConroller");
 
 router.get("/ohlc", controller.getOHLC);
 router.get("/symbols", controller.getSymbols);

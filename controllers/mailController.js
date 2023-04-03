@@ -10,12 +10,9 @@ const transporter = nodemailer.createTransport({
 });
 class mailController {
   sendMail = (req, res) => {
-    console.log(req.body);
     const { to, subject, text } = req.body;
-    console.log(to, subject, text);
     const mailData = {
       from: "vladyslav0060mailer@gmail.com",
-      //   to: to,
       to: "Vlad.bortnik1@gmail.com",
       subject: subject,
       text: text,

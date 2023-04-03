@@ -1,29 +1,30 @@
 const axios = require("axios");
 const { ohlcOptions, defaultOptions } = require("../options/options");
+const { axios_crypto_compare } = require("../src/axios");
+const { convertPeriod } = require("../src/utils");
+
 class coinConroller {
   getOHLC = async (req, res) => {
-    const { interval, baseId, quoteId } = req.query;
+    const { fsym = "btc", tsym = "usd", interval = "1h" } = req.query;
+    const [period, aggregate] = convertPeriod(interval);
     let volumesData = [];
-    const response = await axios(ohlcOptions(interval, baseId, quoteId));
-    const data = response.data.data;
-    const ohlcData = data.map((object) => {
-      console.log(object["volume"]);
+    const response = await axios_crypto_compare.get(`histo${period}`, {
+      params: { fsym, tsym, aggregate, limit: 2000 },
+    });
+
+    const ohlcData = response.data.Data.Data.map((object) => {
+      const { time, high, low, open, close, volumeto } = object;
       volumesData.push({
-        time: parseInt(object["period"].toString().slice(0, -3)),
-        value: parseFloat(object["volume"]),
+        time,
+        value: volumeto,
         color: object["close"] > object["open"] ? "#1b7d54" : "#953040",
       });
-      return {
-        time: parseFloat(object["period"].toString().slice(0, -3)),
-        close: parseFloat(object["close"]),
-        high: parseFloat(object["high"]),
-        low: parseFloat(object["low"]),
-        open: parseFloat(object["open"]),
-      };
+      return { time, close, high, low, open };
     });
+
     return res.json({ volumesData, ohlcData });
   };
-  //test
+
   getSymbols = async (req, res) => {
     const response = await axios(
       defaultOptions("https://api.coincap.io/v2/assets")
@@ -34,7 +35,7 @@ class coinConroller {
         symbol: object["symbol"],
       };
     });
-    res.json(symbols);
+    return res.json(symbols);
   };
   getAssetsForExchange = async (req, res) => {
     const response = await axios(
@@ -42,7 +43,6 @@ class coinConroller {
         "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false"
       )
     );
-    console.log(response.data);
     const final = response.data.map((element) => {
       return {
         id: element["id"],
@@ -51,10 +51,9 @@ class coinConroller {
         image: element["image"],
       };
     });
-    res.json(final);
+    return res.json(final);
   };
   getAssets = async (req, res) => {
-    // const final = [];
     const response = await axios(
       defaultOptions(
         "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false"
@@ -67,8 +66,7 @@ class coinConroller {
         price: element["current_price"],
       };
     });
-    console.log(response.data);
-    res.json(response.data);
+    return res.json(response.data);
   };
   getCoinInfo = async (req, res) => {
     const response = await axios.get(
@@ -80,8 +78,7 @@ class coinConroller {
         },
       }
     );
-    console.log(response);
-    res.send(response.data.data[Object.keys(response.data.data)[0]]);
+    return res.send(response.data.data[Object.keys(response.data.data)[0]]);
   };
 }
 

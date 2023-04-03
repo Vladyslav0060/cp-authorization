@@ -15,7 +15,6 @@ const generateToken = (id, roles) => {
 
 class authController {
   async registration(req, res) {
-    console.log(req.body);
     try {
       const errorsValidator = validationResult(req);
       if (!errorsValidator.isEmpty()) {
@@ -57,8 +56,6 @@ class authController {
         return res.status(400).json({ message: "Incorrect password" });
       const token = generateToken(user._id, user.roles);
       return res.json({ token });
-      // res.json("server works: okay")
-      // console.log("fine")
     } catch (e) {
       console.log(e);
       res.status(400).json({ message: "Login failed" });
